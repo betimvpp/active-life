@@ -34,7 +34,7 @@ export default function Part () {
   const [newId, setNewId] = useState('');
   const [newName, setNewName] = useState('');
   const [newTarget, setNewTarget] = useState('');
-  const [newUserId, setNewUserId] = useState('');
+  const [isCreated, setIsCreated] = useState(false)
   const {user} = useUserContext();
 
   const{
@@ -68,7 +68,7 @@ export default function Part () {
   })
 
   const onSubmit: SubmitHandler<ModelExerciseFB> = async (data) => {
-    const docRef = await addDoc(collection(db, "trainningA"),{
+    const docRef = await addDoc(collection(db, `trainning${data.trainningCard}`),{
       bodyPart: "",
       equipment: "",
       gifUrl: "",
@@ -82,7 +82,7 @@ export default function Part () {
       documentId: ""
     })
     
-    const newDocRef = doc(db, "trainningA", docRef.id);
+    const newDocRef = doc(db, `trainning${data.trainningCard}`, docRef.id);
 
     await updateDoc(newDocRef,{
       bodyPart: i,
@@ -98,22 +98,23 @@ export default function Part () {
       series: data.series,
       documentId: docRef.id
     })
-    alert("O exercicio foi adicionado com sucesso")
+    setIsCreated(true)
   }
+  
   return (
     <>
       <Header />
       <div className='max-w-7xl m-auto h-full grid grid-cols-4'> 
         {execise?.map((part: ModelExerciseFB)=>(
           <div key={part.id} className='max-w-7xl flex flex-col justify-between rounded m-auto w-60 h-80 bg-gradient-to-br from-orange-800 to-orange-300 mb-10'>
-            <Dialog.Root >
+            <Dialog.Root>
               <Dialog.Trigger asChild>                
                 <div className='rounded-sm w-60 h-80 bg-gray-950 hover:scale-98 hover:rounded cursor-pointer duration-200 overflow-hidden' >
-                <Image  src={part.gifUrl} alt={''} unoptimized={true} width={250} height={250}  className='rounded-t h-64'/>
-                <div className='flex flex-col items-center justify-between p-1 gap-1 overflow-hidden'>
-                  <p  className=' text-xs uppercase'>{part.equipment}</p>
-                  <p  className='text-sm text-center uppercase'>{part.name}</p>
-                </div>
+                  <Image  src={part.gifUrl} alt={''} unoptimized={true} width={250} height={250}  className='rounded-t h-64'/>
+                  <div className='flex flex-col items-center justify-between p-1 gap-1 overflow-hidden'>
+                    <p  className=' text-xs uppercase'>{part.equipment}</p>
+                    <p  className='text-sm text-center uppercase'>{part.name}</p>
+                  </div>
                 </div>
               </Dialog.Trigger>
 
@@ -142,21 +143,20 @@ export default function Part () {
                             <p>Which card do you want to add the exercise?</p>
                             <div className='flex gap-1'>
                               A
-                              <input {...register("trainningCard")} type="radio" value={'A'}/>
+                              <input {...register("trainningCard")} type="radio" value={'a'}/>
                               B
-                              <input {...register("trainningCard")} type="radio" value={'B'}/>
+                              <input {...register("trainningCard")} type="radio" value={'b'}/>
                               C
-                              <input {...register("trainningCard")} type="radio" value={'C'}/>
+                              <input {...register("trainningCard")} type="radio" value={'c'}/>
                               D
-                              <input {...register("trainningCard")} type="radio" value={'D'}/>
+                              <input {...register("trainningCard")} type="radio" value={'d'}/>
                             </div>
                           </div> 
-                        
-                        <div className='flex items-center justify-between mt-2 p-1'>
-                          <p>Add to your training</p>
-                          <button 
-                         className='flex items-center justify-center gap-1 px-7 py-2 bg-orangeBase rounded-xl font-semibold duration-200 hover:bg-white hover:text-orangeBase'>Add</button>
-                        </div>
+                          <div className='flex items-center justify-between mt-2 p-1'>
+                            <p>Add to your training</p>
+                            <button 
+                              className='flex items-center justify-center gap-1 px-7 py-2 bg-orangeBase rounded-xl font-semibold duration-200 hover:bg-white hover:text-orangeBase'>Add</button>
+                          </div>
                       </form>
                       <Dialog.Close asChild>
                         <button

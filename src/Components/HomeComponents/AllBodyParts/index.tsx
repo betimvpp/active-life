@@ -29,22 +29,22 @@ export default function AllBodyParts() {
 
   const [sliderRef] = useKeenSlider({
     slides:{
-      perView:5,
-      spacing:40,
+      perView:5
     },
-    renderMode:"precision",
   })
 
   return (
     <div className="flex flex-col justify-center  gap-8 max-w-7xl w-full m-auto"> 
     <h1 className="text-6xl to uppercase">Select your exercise by Body Part</h1>
     <div className="w-full bg-orangeBase h-1"></div>
-    <div ref={sliderRef} className="keen-slider w-full flex max-w-7xl m-auto h-52 pb-4 overflow-hidden">
+    <div ref={sliderRef} className="keen-slider gap-10 w-full flex max-w-7xl m-auto h-52 pb-4 overflow-hidden">
       {data?.map((bodyPart, i)=>(
-          <Link className="keen-slider__slide bg-gray-950 group duration-200 hover:bg-orangeBase group rounded-md flex flex-col items-center justify-start h-full px-4 overflow-hidden min-w-250" key={`${data[i]}`} prefetch={false} href={`/Parts/${data[i]}`} >
+        <div className="keen-slider__slide bg-gray-950 group duration-200 hover:bg-orangeBase group rounded-md flex flex-col items-center justify-start h-full px-4 overflow-hidden min-w-250"  key={`${data[i]}`}>  
+          <Link  href={`/Parts/${data[i]}`} >
             <h1 className="group text-orangeBase group-hover:text-white p-2 w-full text-xl font-bold uppercase">{`${data[i]}`}</h1>
             <p className="group text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut venenatis, nunc a pretium viverra.</p>
           </Link>
+        </div>
       ))}
     </div>
       
